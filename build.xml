@@ -1,0 +1,54 @@
+<project name="TJ2PDF" default="compile" basedir=".">
+	<description>
+		Script to convert from TJ3 to a LaTeX Gantt Chart
+	</description>
+	<property name="src" location="src" />
+	<property name="bin" location="bin" />
+	<property name="dist" location="dist" />
+	<property name="lib" location="lib" />
+
+	<target name="init">
+		<tstamp/>
+		<mkdir dir="${bin}" />
+	</target>
+
+	<target name="compile" depends="init" description="Compile code">
+		<javac srcdir="${src}" destdir="${bin}">
+		<classpath>
+			<fileset dir="lib">
+				<include name="**/*.jar" />
+			</fileset>
+		</classpath>
+		</javac>
+		<copy file="Print.csv" todir="${bin}" />
+	</target>
+
+	<target name="dist" depends="compile" description="Generate the runnable JAR">
+		<mkdir dir="${dist}" />
+		<jar jarfile="${dist}/TJ2PDF-${DSTAMP}.jar">
+			<fileset dir="${bin}">
+				<include name="*.class" />
+			</fileset>
+			<manifest>
+				<attribute name="Main-Class" value="GanttMaker" />
+			</manifest>
+			<zipgroupfileset dir="lib" includes="**/*.jar" />
+		</jar>
+	</target>
+
+	<target name="test" depends="compile" description="Test the code">
+		<java classname="GanttMaker" dir="bin" fork="true">
+			<classpath>
+				<pathelement location="bin" />
+				<fileset dir="lib">
+					<include name="**/*.jar"/>
+				</fileset>
+			</classpath>
+		</java>
+	</target>
+
+	<target name="clean" description="Clean the directory">
+		<delete dir="${bin}" />
+		<delete dir="${dist}" />
+	</target>
+</project>	
