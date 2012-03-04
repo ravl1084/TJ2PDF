@@ -1,6 +1,23 @@
 /**
- * TJ2PDF: Script to produce a LaTeX snippet to produce a PDF version of a TJ3 Project Gantt Chart
+ * TJ2PDF: Script to create a LaTeX snippet to produce a PDF version of a TJ3 Project Gantt Chart
+ *
+ * Copyright (C) 2012 Rene Vergara
+ *
+ * This file is part of TJ2PDF.
+ *
+ * TJ2PDF is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3.
+ *
+ * TJ2PDF is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with TJ2PDF.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 import java.io.*;
 import java.util.Vector;
 /**
