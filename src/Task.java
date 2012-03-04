@@ -43,7 +43,7 @@ public class Task {
 			while(n >= 0){
 				m = str.indexOf(")");
 				if(m >= 0){
-					precursors.add(str.substring(n+1,m-1));
+					precursors.add(str.substring(n+1,m));
 					str = str.substring(m+1,str.length()-1);
 				}
 				n = str.indexOf("(");
@@ -64,12 +64,23 @@ public class Task {
 	public String getTaskLatex(int y, int m, int d){
 		int offset = (year - y)*360 + (month - m)*30 + day - d;
 		if(duration == 0){
-			return "\\ganttmilestone{"+name+"}{"+offset+"}\\\\";
+			return "\\ganttmilestone[milestone width=1.5, name="+id+"]{"+name+"}{"+offset+"}\\\\";
 		} else if(group){
-			return "\\ganttgroup[progress="+complete+"]{"+name+"}{"+offset+"}{"+(offset + duration)+"}\\\\";
+			return "\\ganttgroup[progress="+complete+", name="+id+"]{"+name+"}{"+offset+"}{"+(offset + duration)+"}\\\\";
 		} else {
-			return "\\ganttbar{"+name+"}{"+offset+"}{"+(offset + duration)+"}\\\\";
+			return "\\ganttbar[name="+id+"]{"+name+"}{"+offset+"}{"+(offset + duration)+"}\\\\";
 		}
+	}
+
+	public Vector<String> linkTasks(){
+		Vector<String> links = null;
+		if(precursors != null){
+			links = new Vector<String>();
+			for(int i=0; i < precursors.size(); i++){
+				links.add("\\ganttlink{"+precursors.get(i)+"}{"+id+"}");
+			}
+		}
+		return links;
 	}
 
 	public String toString(){

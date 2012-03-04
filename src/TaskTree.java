@@ -86,7 +86,7 @@ public class TaskTree {
 		int counter;
 		try{
 			out.println("\\begin{ganttchart}");
-			out.println("[hgrid, vgrid={*6{draw=none}, *1{dashed}},x unit="+resolution+"\\textwidth]{"+duration+"}");
+			out.println("[hgrid, vgrid={*6{draw=none}, *1{dashed}},x unit="+resolution+"\\textwidth, group/.style={draw=black}, bar/.style={draw=black, fill=blue!50}]{"+(monthcount*30)+"}");
 			counter = monthcount;
 			for(int i=0; i < yearcount; i++){
 				if(counter > 12){
@@ -97,19 +97,27 @@ public class TaskTree {
 				}
 			}
 			out.println("\\\\");
-			counter = duration;
+			counter = month;
 			for(int j=0; j < monthcount; j++){
-				if(counter > 30){
-					out.print("\\gantttitle{"+(month+j)+"}{30} ");
-					counter-=30;
-				} else {
-					out.print("\\gantttitle{"+(month+j)+"}{"+counter+"} ");
+				if(counter > 12){
+					counter = 1;
 				}
+				out.print("\\gantttitle{"+counter+"}{30} ");
+				counter++;
 			}
 			out.println("\\\\");
 			counter = duration;
-			for(int k=0; k < tasks.size();k++){
+			for(int k=0; k < tasks.size(); k++){
 				out.println(tasks.get(k).getTaskLatex(year, month, day));
+			}
+			for(int n=0; n < tasks.size(); n++){
+				Vector<String> links = new Vector<String>();
+				links = tasks.get(n).linkTasks();
+				if(links != null){
+					for(int m = 0; m < links.size(); m++){
+						out.println(links.get(m));
+					}
+				}
 			}
 			out.println("\\end{ganttchart}");
 		} finally {
