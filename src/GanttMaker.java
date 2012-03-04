@@ -20,10 +20,11 @@ public class GanttMaker {
 		String str;
 		try{
 			BufferedReader in = new BufferedReader(new FileReader("Print.csv"));
-			Vector<String> data = new Vector<String>();
+			Vector<String> data;
 			int n;
 			str = in.readLine();
 			while((str = in.readLine()) != null){
+				data = new Vector<String>();
 				str = str.replaceAll("\"", "");
 				n = str.indexOf(";");
 				//System.out.println(str);
@@ -38,12 +39,18 @@ public class GanttMaker {
 					//System.out.println(n);
 				}
 				length = str.length();
-				if(length > 0){
+				if(length >= 0){
 					data.add(str);
 				}
+				for(int i = 0; i < data.size(); i++){
+					data.set(i, data.get(i).replaceAll("\"", ""));
+					//data.remove(0);
+				}
 				//System.out.println(data);
-				plan.add(data);
+				plan.newTask(data);
 			}
+			plan.markGroup();
+			plan.write();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

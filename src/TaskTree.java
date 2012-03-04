@@ -5,19 +5,35 @@
  */
 
 import java.util.Vector;
+import java.io.*;
 
 /**
  * @author Rene Vergara
  */
 public class TaskTree {
 	private Vector<Task> tasks;
+	private String date;
+	private int duration;
+	private double resolution;
+	private int year;
+	private int month;
+	private int day;
+	private int yearcount;
+	private int monthcount;
 
 	public TaskTree(){
 		tasks = new Vector<Task>();
 	}
 
-	public void add(Vector<String> data){
-		tasks.add(new Task(data));
+	public void newTask(Vector<String> data){
+		Task t = new Task(data);
+		System.out.println(t);
+		tasks.add(t);
+	}
+
+	public void test(){
+		System.out.println(tasks.get(0));
+		System.out.println(tasks.get(1));
 	}
 
 	public void markGroup(){
@@ -27,13 +43,77 @@ public class TaskTree {
 			str = tasks.get(i).getId();
 			n = 0;
 			for(int k = 0; k < tasks.size(); k++){
-				if(!str.equals(tasks.get(k).getId()) && tasks.get(k).getId().indexOf(str) != -1){
+				if(!tasks.get(k).getId().equals(str) && tasks.get(k).getId().indexOf(str) != -1){
 					n++;
 				}
 			}
-			if(n == 0){
+			if(n != 0){
 				tasks.get(i).setGroup();
 			}
+		}
+		date = tasks.get(0).getDate();
+		//System.out.println(date);
+		duration = tasks.get(0).getDuration();
+		resolution = 0.700000 / (int) duration;
+		year = Integer.valueOf(date.substring(0,date.indexOf("-")));
+		//System.out.println(year);
+		str = date.substring(date.indexOf("-")+1, date.length());
+		month = Integer.valueOf(str.substring(0,str.indexOf("-")));
+		//System.out.println(month);
+		str = str.substring(str.indexOf("-")+1, str.length());
+		day = Integer.valueOf(str);
+		yearcount = 1;
+		monthcount = 1;
+		int daycount = day;
+		int monthc = month;
+		for(int j = 0; j < duration; j++){
+			daycount++;
+			if(daycount % 31 == 0){
+				monthcount++;
+				daycount = 1;
+			}
+			if(monthc % 13 == 0){
+				yearcount++;
+				monthc = 1;
+			}
+		}
+		//System.out.println("Years: "+yearcount);
+		//System.out.println("Months: "+monthcount);
+	}
+
+	public void write() throws IOException{
+		PrintWriter out = new PrintWriter("Chart.txt");
+		int counter;
+		try{
+			out.println("\\begin{ganttchart}");
+			out.println("[hgrid, vgrid={*6{draw=none}, *1{dashed}},x unit="+resolution+"\\textwidth]{"+duration+"}");
+			counter = monthcount;
+			for(int i=0; i < yearcount; i++){
+				if(counter > 12){
+					out.print("\\gantttitle{"+(year+i)+"}{360} ");
+					counter-=12;
+				} else {
+					out.print("\\gantttitle{"+(year+i)+"}{"+(counter*30)+"} ");
+				}
+			}
+			out.println("\\\\");
+			counter = duration;
+			for(int j=0; j < monthcount; j++){
+				if(counter > 30){
+					out.print("\\gantttitle{"+(month+j)+"}{30} ");
+					counter-=30;
+				} else {
+					out.print("\\gantttitle{"+(month+j)+"}{"+counter+"} ");
+				}
+			}
+			out.println("\\\\");
+			counter = duration;
+			for(int k=0; k < tasks.size();k++){
+				out.println(tasks.get(k).getTaskLatex(year, month, day));
+			}
+			out.println("\\end{ganttchart}");
+		} finally {
+			out.close();
 		}
 	}
 }

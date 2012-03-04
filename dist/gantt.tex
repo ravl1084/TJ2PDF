@@ -1,0 +1,27 @@
+% gantt.tex: Working example for producing LaTeX output from TJ2PDF
+\documentclass[letterpaper,10pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{pgfgantt}
+\usepackage{adjustbox}
+\newsavebox{\mysavebox}
+\newlength{\myrest}
+
+\begin{document}
+\begin{lrbox}{\mysavebox}
+% Place the contents of Chart.txt below this line
+
+% Place the contents of Chart.txt above this line
+\end{lrbox}
+\ifdim\ht\mysavebox>\textheight
+    \setlength{\myrest}{\ht\mysavebox}%
+    \loop\ifdim\myrest>\textheight
+        \newpage\par\noindent
+        \clipbox{0 {\myrest-\textheight} 0 {\ht\mysavebox-\myrest}}{\usebox{\mysavebox}}%
+        \addtolength{\myrest}{-\textheight}%
+    \repeat
+    \newpage\par\noindent
+    \clipbox{0 0 0 {\ht\mysavebox-\myrest}}{\usebox{\mysavebox}}%
+\else
+    \usebox{\mysavebox}%
+\fi
+\end{document}
