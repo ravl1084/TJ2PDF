@@ -15,7 +15,7 @@ Dependencies
 
 Usage
 -----
-1. Include the following in your TJP file:
+1. Include the following at the end of your TJP file:
 <pre>
        taskreport printout "Print" {
             formats csv
@@ -27,4 +27,18 @@ Usage
 4. Run `java -jar TJ2PDF-XXXX.jar`. This should produce a file
    "Chart.txt".
 5. Open the file "gantt.tex" and place the contents of "Chart.txt" where
-   indicated. Run "gantt.text" through LaTeX.
+   indicated. Run "gantt.tex" through LaTeX.
+
+License
+-------
+TJ2PDF is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, version 3.
+
+TJ2PDF is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with TJ2PDF.  If not, see <http://www.gnu.org/licenses/>.
