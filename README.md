@@ -16,12 +16,12 @@ Dependencies
 Usage
 -----
 1. Include the following in your TJP file:
-
+<pre>
        taskreport printout "Print" {
             formats csv
             columns id, name, duration, start, complete, precursors
        }
-
+</pre>
 2. Run TJ3 on your project file to produce the report "Print.csv"
 3. Copy TJ2PDF-XXXX.jar to the same directory where the CSV file is.
 4. Run `java -jar TJ2PDF-XXXX.jar`. This should produce a file
